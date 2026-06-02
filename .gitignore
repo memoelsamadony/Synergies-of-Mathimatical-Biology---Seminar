@@ -1,0 +1,53 @@
+# Python/runtime artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local virtual environments
+venv/
+.venv/
+.venv*/
+
+# Editor and office lock files
+.~lock.*
+*.swp
+*.swo
+.DS_Store
+
+# Local hidden directories and environment files
+.*/
+.env
+.env.*
+
+# Generated reports, slides, and local paper copies
+*.pdf
+*.pptx
+
+# Generated figure outputs
+*.png
+
+# Keep source/data needed for Fig. 7 review, but exclude raw archives and
+# local simulation dumps that are not part of the review artifact.
+*.zip
+data/samples/
+data/sigma/
+data/mat_pf/
+data/mat_sh/
+
+# Separate figure workflow files
+fig6*
+figure6*
+reproduce_fig6*
+assets/*fig6*
+
+# Local scratch/investigation scripts
+investigate.py
+edit_author_slide.py
+generate_pdfs.py
+generate_presentation.py
+generate_cheatsheet.py
+
+# Generated image assets
+assets/
