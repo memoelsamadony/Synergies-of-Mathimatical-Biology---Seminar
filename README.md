@@ -16,6 +16,12 @@ layer that is not included in the original GitHub code release.
   panels from the available simulation summaries.
 - `fig7_regression_validation.py` evaluates the same linear models with random
   train/test holdout and grouped leave-one-R-out validation.
+- `fig6_reproduce_simulation.py` is an illustrative subsample of the Figure 6
+  stochasticity experiment. It shows the core 1.3a story (wild-type stripes stay
+  characteristic under noise σ while mutant patterns degrade) using raw
+  pigment-cell coordinates plus persistent homology (Ripser) on a periodic
+  domain to quantify β₀ (spots/components) and β₁ (stripe/interstripe loops). It
+  is a small demonstration, not the full 24,000-simulation study.
 - `data/*.csv` contains the summary tables used for pfeffer, shady, and
   wild-type pattern statistics.
 - `data/mat_wt/*.mat` contains the small wild-type MATLAB summary files needed
@@ -78,6 +84,25 @@ This writes `fig7_regression_validation.png` and prints a console table with:
 - reproduced in-sample R-squared values
 - random simulation-level holdout R-squared values
 - grouped leave-one-R-out R-squared values for prediction at unseen `R`
+
+Run the Figure 6 stochasticity demonstration:
+
+```bash
+venv/bin/python fig6_reproduce_simulation.py
+```
+
+This computes (β₀, β₁) per condition via persistent homology and writes
+`fig6_demo.png`. It requires the wild-type and pfeffer sample/sigma simulation
+files under `data/samples/` and `data/sigma/`, which are not committed to this
+repository (they are large local simulation dumps). Restore them from the
+authors' Figshare project before running:
+
+```text
+data/samples/Out_WT_default_1.mat
+data/samples/Out_pfef_default_1.mat
+data/sigma/Out_WT_pcpdTest_sigma_20_*.mat
+data/sigma/Out_pfef_pcpdTest_sigma_20_*.mat
+```
 
 ## Notes for Review
 

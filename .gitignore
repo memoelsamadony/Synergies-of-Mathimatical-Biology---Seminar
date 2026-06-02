@@ -36,12 +36,6 @@ data/sigma/
 data/mat_pf/
 data/mat_sh/
 
-# Separate figure workflow files
-fig6*
-figure6*
-reproduce_fig6*
-assets/*fig6*
-
 # Local scratch/investigation scripts
 investigate.py
 edit_author_slide.py
