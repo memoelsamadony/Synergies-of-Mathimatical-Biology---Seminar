@@ -1,101 +1,83 @@
-# Figure 7 Regression Analysis
+# Topological Data Analysis of Zebrafish Patterns — Topic 1.3
 
-This repository contains a small, review-oriented Python analysis for the
-Figure 7 regression case study from:
+Code and data for our seminar contribution on **Topic 1.3 — Inferring Cellular
+Interactions from Pattern Statistics**, in *Synergies of Mathematical Biology*,
+TU Dresden, SoSe 26.
 
-McGuirl, Volkening, and Sandstede, "Topological Data Analysis of Zebrafish
-Patterns", PNAS 2020. DOI: `10.1073/pnas.1917763117`.
+**Paper studied:** M. R. McGuirl, A. Volkening & B. Sandstede,
+"Topological Data Analysis of Zebrafish Patterns," *PNAS* 117(10):5113–5124, 2020.
+doi:[10.1073/pnas.1917763117](https://doi.org/10.1073/pnas.1917763117) (open access, CC BY 4.0).
 
-The code uses the authors' public Figshare simulation data to recreate the
-main Figure 7 regression relationships and to add an out-of-sample validation
-layer that is not included in the original GitHub code release.
+**Authors:** Ahmed Alaa Elsaadani (1.3a) · Mahmoud Labib Elsamadnoy (1.3b)
 
-## What Is Included
+---
 
-- `fig7_regression_recreation.py` recreates the Figure 7 regression/statistics
-  panels from the available simulation summaries.
-- `fig7_regression_validation.py` evaluates the same linear models with random
-  train/test holdout and grouped leave-one-R-out validation.
-- `fig6_reproduce_simulation.py` is an illustrative subsample of the Figure 6
-  stochasticity experiment. It shows the core 1.3a story (wild-type stripes stay
-  characteristic under noise σ while mutant patterns degrade) using raw
-  pigment-cell coordinates plus persistent homology (Ripser) on a periodic
-  domain to quantify β₀ (spots/components) and β₁ (stripe/interstripe loops). It
-  is a small demonstration, not the full 24,000-simulation study.
-- `data/*.csv` contains the summary tables used for pfeffer, shady, and
-  wild-type pattern statistics.
-- `data/mat_wt/*.mat` contains the small wild-type MATLAB summary files needed
-  to recompute stripe and interstripe widths.
+## What this repository does
 
-The scripts intentionally do not claim to be a pixel-perfect Figure 7
-reproduction. They focus on the regression/statistics targets and use
-scatter/median summaries instead of the paper's KDE panel style.
+Rather than only summarising the paper, we work directly with the authors'
+public simulation data to **reproduce their two key results** and to **add an
+out-of-sample validation** that the original code release does not include.
 
-## What Is Not Included
+- **1.3b — Figure 7 (parameter sweep + linear regression).** We refit the linear
+  models relating the long-range interaction radius *R* to pattern statistics
+  (stripe / interstripe width, spot size), recovering R² values close to the
+  paper's, and then test them out-of-sample.
+- **1.3a — Figure 6 (stochasticity).** We recompute the topological summaries
+  (β₀ = spots, β₁ = stripes / interstripes) directly from raw pigment-cell
+  coordinates using persistent homology (Ripser) on the periodic domain.
 
-The repository ignores local or generated files that are not useful for code
-review:
+## Repository contents
 
-- local virtual environments and Python caches
-- generated PNG/PDF/PPTX presentation outputs
-- raw zip archives and larger local simulation dumps
+| File | Purpose |
+| --- | --- |
+| `fig7_regression_recreation.py` | Recreates the Figure 7 regression / statistics panels from the simulation summaries. |
+| `fig7_regression_validation.py` | Re-evaluates the same linear models with a random train/test holdout and grouped leave-one-*R*-out validation. |
+| `fig6_reproduce_simulation.py` | Illustrative subsample of the Figure 6 stochasticity experiment (β₀ / β₁ via persistent homology). |
+| `data/*.csv` | Per-simulation summary tables (wild-type, *pfeffer*, *shady*). |
+| `data/mat_wt/*.mat` | Wild-type MATLAB summaries used to recompute stripe / interstripe widths. |
+| `requirements.txt` | Python dependencies. |
 
-- scratch investigation notebooks
+These scripts are **not** a pixel-perfect Figure 7 reproduction: they target the
+regression / statistics relationships, use scatter + per-*R* medians instead of
+the paper's KDE density panels, and omit the example-pattern images (panel G).
 
 ## Setup
-
-Create a virtual environment and install the Python dependencies:
 
 ```bash
 python3 -m venv venv
 venv/bin/pip install -r requirements.txt
 ```
 
-The committed data files are enough for the current Fig. 7 scripts. If the data
-directory is rebuilt from scratch, download the simulation data from the authors'
-Figshare project and restore the same paths:
-
-```text
-data/WT_LSTest_annulusIn_MB.csv
-data/pfeffer_LSTest_annulusIn_MB.csv
-data/shady_LSTest_annulusIn_MB.csv
-data/mat_wt/*.mat
-```
-
 ## Running
 
-Recreate the Fig. 7 regression/statistics panels:
+**Figure 7 — recreation**
 
 ```bash
-venv/bin/python fig7_regression_recreation.py
+venv/bin/python fig7_regression_recreation.py      # → fig7_regression_recreation.png
 ```
 
-This writes `fig7_regression_recreation.png`.
-
-Run the validation experiment:
+**Figure 7 — validation**
 
 ```bash
-venv/bin/python fig7_regression_validation.py
+venv/bin/python fig7_regression_validation.py      # → fig7_regression_validation.png + console table
 ```
 
-This writes `fig7_regression_validation.png` and prints a console table with:
+The console table reports, for each statistic:
 
-- paper in-sample R-squared values
-- reproduced in-sample R-squared values
-- random simulation-level holdout R-squared values
-- grouped leave-one-R-out R-squared values for prediction at unseen `R`
+- the paper's in-sample R²,
+- our reproduced in-sample R²,
+- random simulation-level holdout R²,
+- grouped leave-one-*R*-out R² (prediction at *unseen* values of *R*).
 
-Run the Figure 6 stochasticity demonstration:
+**Figure 6 — stochasticity demonstration**
 
 ```bash
-venv/bin/python fig6_reproduce_simulation.py
+venv/bin/python fig6_reproduce_simulation.py       # → fig6_demo.png
 ```
 
-This computes (β₀, β₁) per condition via persistent homology and writes
-`fig6_demo.png`. It requires the wild-type and pfeffer sample/sigma simulation
-files under `data/samples/` and `data/sigma/`, which are not committed to this
-repository (they are large local simulation dumps). Restore them from the
-authors' Figshare project before running:
+This computes (β₀, β₁) per condition via persistent homology. It needs the
+wild-type and *pfeffer* coordinate files, which are **not committed** (they are
+large raw simulation dumps). Restore them from the Figshare deposit under:
 
 ```text
 data/samples/Out_WT_default_1.mat
@@ -104,14 +86,33 @@ data/sigma/Out_WT_pcpdTest_sigma_20_*.mat
 data/sigma/Out_pfef_pcpdTest_sigma_20_*.mat
 ```
 
-## Notes for Review
+## Data
 
-The pfeffer spot-size fit is the main value to inspect carefully. With the
-available CSV column and positive-size filtering, the recreated fit does not
-exactly match the paper's reported coefficient and R-squared. The scripts keep
-this visible in the console output rather than hiding the mismatch.
+The committed data (the CSV summaries and `data/mat_wt/`) is enough to run the
+Figure 7 scripts. To rebuild the data directory from scratch, download the
+simulation data from the authors' Figshare project
+([Zebrafish_simulation_data](https://figshare.com/projects/Zebrafish_simulation_data/72689))
+and restore:
 
-For human review, Python scripts are preferable to notebooks because they are
-easier to diff, rerun, and test. A notebook version can be useful later for a
-presentation walkthrough, but it should be generated from or kept consistent
-with these scripts rather than replacing them as the source of truth.
+```text
+data/WT_LSTest_annulusIn_MB.csv
+data/pfeffer_LSTest_annulusIn_MB.csv
+data/shady_LSTest_annulusIn_MB.csv
+data/mat_wt/*.mat
+```
+
+## A note on the *pfeffer* fit
+
+Our *pfeffer* spot-size R² (≈ 0.84) is higher than the paper's (0.72). We traced
+this to the handling of zero-spot patterns at small *R*: those degenerate low-*R*
+simulations are dropped by the positive-size filter, which removes the low-*R*
+scatter and steepens the fit. Keeping them in returns a slope (≈ 0.38) that
+matches the paper's (0.37). The scripts surface this in the console output rather
+than hiding the mismatch.
+
+## Acknowledgements
+
+The simulation data and the original analysis approach are due to McGuirl,
+Volkening & Sandstede (PNAS 2020), with their code at
+[sandstede-lab/Quantifying_Zebrafish_Patterns](https://github.com/sandstede-lab/Quantifying_Zebrafish_Patterns)
+and data on Figshare — both released openly under permissive terms.
